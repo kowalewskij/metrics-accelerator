@@ -27,9 +27,6 @@ jobs:
 
     - name: step3 - Build with Maven
       run: mvn clean package
-      env:
-          MAVEN_USERNAME: ${{ secrets.ANYPOINT_APP_CLIENT_ID }}
-          MAVEN_PASSWORD: ${{ secrets.ANYPOINT_APP_CLIENT_SECRET }}
 
     - name: step4 - list generated file list
       run: ls -a

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (C) MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
+  
+  The software in this package is published under the terms of the
+  Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License,
+  a copy of which has been included with this distribution in the LICENSE.txt file.
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+    <server>
+      <id>anypoint-org</id>
+      <username>jkowalewski</username>
+      <password>K4w1D1n23l2022+</password>
+    </server>
+    <server>
+      <id>MuleRepository</id>
+      <username>jkowalewski</username>
+      <password>K4w1D1n23l2022+</password>
+    </server>   
+  </servers>
+  <pluginGroups>
+    <pluginGroup>org.mule.tools</pluginGroup>
+  </pluginGroups>
+  <profiles>
+    <profile>
+      <id>Mule</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>MuleRepository</id>
+          <name>MuleRepository</name>
+          <url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
+          <layout>default</layout>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>mule-ee-releases</id>
+          <name>Mule Release Repository</name>
+          <url>https://repository-master.mulesoft.org/nexus/content/repositories/ci-releases</url>
+        </repository>
+        <repository>
+          <id>mule-ee-snapshots</id>
+          <name>Mule Snapshot Repository</name>
+          <url>https://repository-master.mulesoft.org/nexus/content/repositories/ci-snapshots</url>
+        </repository>
+        <repository>
+          <id>mule-public</id>
+          <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+        </repository>       
+        <repository>
+          <id>anypoint-org</id>
+          <name>Anypoint Exchange Org</name>
+          <url>https://maven.anypoint.mulesoft.com/api/v2/organizations/8ec380c0-efa1-4cb7-a91f-0889ceda6e9f/maven</url>
+          <layout>default</layout>
+        </repository>
+        <repository>
+          <id>anypoint-exchange-v2</id>
+          <name>nypoint Exchange Org</name>
+          <url>https://maven.anypoint.mulesoft.com/api/v2/organizations/8ec380c0-efa1-4cb7-a91f-0889ceda6e9f/maven</url>
+          <layout>default</layout>
+        </repository>        
+      </repositories>
+    </profile>
+    <profile>
+      <id>mule-extra-repos</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>mule-public</id>
+          <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>mule-public</id>
+          <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+</settings>

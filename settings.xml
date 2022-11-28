@@ -3,7 +3,7 @@
         <server>
             <id>mulesoft-ee</id>
             <username>${MULE_NEXUS_USERNAME}</username>
-            <password><![CDATA[${MULE_NEXUS_PASSWORD}]]></password>
+            <password>${MULE_NEXUS_PASSWORD}</password>
         </server>
         <server>
             <id>exchange</id>

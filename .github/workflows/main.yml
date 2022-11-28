@@ -1,39 +1,98 @@
-# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: mvn build
+name: Mule CI with Maven
 
 on:
   push:
-    branches: [ develop ]
-    
+    branches: [ development ]
+
+env:
+  ## Cloudhub Properties -- Reference: https://docs.mulesoft.com/mule-runtime/4.3/deploy-to-cloudhub
+  CLOUDHUB_REGION: sa-east-1
+  CLOUDHUB_BUSINESS_GROUP_ID: 8ec380c0-efa1-4cb7-a91f-0889ceda6e9f
+  ANYPOINT_PLATFORM_ANALYTICS_AGENT_ENABLED: true
+
+  ## Mulesoft Nexus Repository Credentials
+  MULE_NEXUS_USERNAME: ${{ secrets.MULE_NEXUS_USERNAME }}
+  MULE_NEXUS_PASSWORD: ${{ secrets.MULE_NEXUS_PASSWORD }}
+
+  ## App Specific Properties
+
+  # Environment Specific
+  ## Dev
+  MULE_ENV_DEV: dev
+  CLOUDHUB_ENVIRONMENT_DEV: Dev
+  CLOUDHUB_WORKERS_DEV: 1
+  CLOUDHUB_WORKER_TYPE_DEV: MICRO
+  CLOUDHUB_APPLICATION_NAME_DEV: metrics-accelerator-dev
 
 jobs:
-  build:
-
+  build-and-test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
-    - name: step1 - checkout develop branck code 
-      uses: actions/checkout@v3
-      
-    - name: step2 - Set up JDK 1.8
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-
-    - name: step3 - Build with Maven
-      run: mvn clean package -B --file pom.xml
-
-
-    - name: step4 - list generated file list
-      run: ls -a
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/settings.xml') }}
+        restore-keys: ${{ runner.os }}-m2-${{ hashFiles('**/settings.xml') }}
+   
+    - name: Build and test
+      run: mvn clean package -s settings.xml 
       
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: metrics-accelerator
+        path: target/*.jar
+        retention-days: 5
+ 
+  deploy-dev:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: development
+    env:   
+      ANYPOINT_PLATFORM_CLIENT_ID: ${{ secrets.ANYPOINT_APP_CLIENT_ID }}
+      ANYPOINT_PLATFORM_CLIENT_SECRET: ${{ secrets.ANYPOINT_APP_CLIENT_SECRET }}
 
-    - name: step5 -  observ target folder
-      run: |  
-        cd target
-        ls -a
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/settings.xml') }}
+        restore-keys: ${{ runner.os }}-m2-${{ hashFiles('**/settings.xml') }}
+
+    - name: Download Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: metrics-accelerator
+    
+    - name: Deploy to Cloudhub Dev
+      run: |
+        artifactName=$(ls *.jar | head -1) 
+        mvn mule:deploy \
+          -s settings.xml \
+          -Dmule.artifact=$artifactName \
+          -Dmule.env="$MULE_ENV_DEV" \
+          -Dcloudhub.applicationName="$CLOUDHUB_APPLICATION_NAME_DEV" \
+          -Dcloudhub.environment="$CLOUDHUB_ENVIRONMENT_DEV" \
+          -Dcloudhub.workers="$CLOUDHUB_WORKERS_DEV" \
+          -Dcloudhub.workerType="$CLOUDHUB_WORKER_TYPE_DEV" \
+          -Dcloudhub.region="$CLOUDHUB_REGION" \
+          -Dcloudhub.businessGroupId="$CLOUDHUB_BUSINESS_GROUP_ID" \
+          -Dcloudhub.environment.clientId="$ANYPOINT_PLATFORM_CLIENT_ID" \
+          -Dcloudhub.environment.clientSecret="$ANYPOINT_PLATFORM_CLIENT_SECRET" \
+          -Dcloudhub.environment.analyticsAgentEnabled="$ANYPOINT_PLATFORM_ANALYTICS_AGENT_ENABLED"\

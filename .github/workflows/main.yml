@@ -5,7 +5,7 @@ name: mvn build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
     
 
 jobs:
@@ -27,6 +27,7 @@ jobs:
 
     - name: step3 - Build with Maven
       run: mvn clean package -B --file pom.xml
+
 
     - name: step4 - list generated file list
       run: ls -a

@@ -5,7 +5,7 @@ name: mvn build
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ development ]
     
 
 jobs:

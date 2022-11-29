@@ -38,16 +38,22 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<classifier>mule-application</classifier>
-					<sharedLibraries>
-						<!-- Uncomment the following shared library if MongoDB loader is needed -->
-						<!-- 
-						<sharedLibrary>
-							<groupId>org.mongodb</groupId>
-							<artifactId>mongodb-driver-legacy</artifactId>
-						</sharedLibrary>
-						 -->
-					</sharedLibraries>
+					<cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>${app.runtime}</muleVersion>
+						<applicationName>${cloudhub.applicationName}</applicationName>
+						<environment>${cloudhub.environment}</environment>
+						<workers>${cloudhub.workers}</workers>
+						<workerType>${cloudhub.workerType}</workerType>
+						<region>${cloudhub.region}</region>
+						<businessGroupId>${cloudhub.businessGroupId}</businessGroupId>
+						<connectedAppClientId>${cloudhub.connectedAppClientId}</connectedAppClientId>
+						<connectedAppClientSecret>${cloudhub.connectedAppClientSecret}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
+						<objectStoreV2>true</objectStoreV2>
+						<persistentQueues>true</persistentQueues>
+						<overrideProperties>false</overrideProperties>
+					</cloudHubDeployment>
 				</configuration>
 			</plugin>
 			<plugin>

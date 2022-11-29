@@ -2,13 +2,13 @@
     <servers>
         <server>
             <id>mulesoft-ee</id>
-            <username>jkowalewski</username>
-            <password>K4w1D1n23l2022+</password>
+            <username>${MULE_NEXUS_USERNAME}</username>
+            <password>${MULE_NEXUS_PASSWORD}</password>
         </server>
         <server>
             <id>exchange</id>
-            <username>jkowalewski</username>
-            <password>K4w1D1n23l2022+</password>
+            <username>${cloudhub.environment.clientId}</username>
+            <password>${cloudhub.environment.clientSecret}</password>
         </server>
 
     </servers>

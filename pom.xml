@@ -47,9 +47,8 @@
 						<workerType>${cloudhub.workerType}</workerType>
 						<region>${cloudhub.region}</region>
 						<businessGroupId>${cloudhub.businessGroupId}</businessGroupId>
-						<connectedAppClientId>${cloudhub.connectedAppClientId}</connectedAppClientId>
-						<connectedAppClientSecret>${cloudhub.connectedAppClientSecret}</connectedAppClientSecret>
-						<connectedAppGrantType>client_credentials</connectedAppGrantType>
+						<username>${cloudhub.environment.clientId}</username>
+						<password>${cloudhub.environment.clientSecret}</password>
 						<objectStoreV2>true</objectStoreV2>
 						<persistentQueues>true</persistentQueues>
 						<overrideProperties>false</overrideProperties>

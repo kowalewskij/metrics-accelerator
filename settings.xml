@@ -26,7 +26,7 @@
                     <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
                 </repository>
                 <repository>
-                    <id>exchange</id>
+                    <id>anypoint-exchange</id>
                     <name>Exchange Repository</name>
                     <url>https://maven.anypoint.mulesoft.com/api/v2/organizations/8ec380c0-efa1-4cb7-a91f-0889ceda6e9f/maven</url>
                     <layout>default</layout>

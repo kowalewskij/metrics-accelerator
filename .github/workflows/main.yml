@@ -25,7 +25,7 @@ env:
   CLOUDHUB_ENVIRONMENT_DEV: dev
   CLOUDHUB_WORKERS_DEV: 1
   CLOUDHUB_WORKER_TYPE_DEV: MICRO
-  CLOUDHUB_APPLICATION_NAME_DEV: metrics-accelerator-dev
+  CLOUDHUB_APPLICATION_NAME_DEV: metrics-accelerator-test-dk-dev
 
 jobs:
   build-and-test:

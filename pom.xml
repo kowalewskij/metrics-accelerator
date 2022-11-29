@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mulesoft</groupId>
-	<artifactId>metrics-accelerator</artifactId>
+	<artifactId>metrics-accelerator-test-dk</artifactId>
 	<version>1.7.0</version>
 	<packaging>mule-application</packaging>
 
-	<name>metrics-accelerator</name>
+	<name>metrics-accelerator-test-dk</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,6 +28,9 @@
 		<munit-tools.version>2.3.1</munit-tools.version>
 		<mule-mongodb-connector.version>6.3.1</mule-mongodb-connector.version>
 		<mongodb-driver-legacy.version>4.0.4</mongodb-driver-legacy.version>
+		<app.runtime>4.4.0</app.runtime>
+
+
 	</properties>
 
 	<build>
@@ -38,22 +41,27 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<classifier>mule-application</classifier>
-					<sharedLibraries>
-						<!-- Uncomment the following shared library if MongoDB loader is needed -->
-						<!-- 
-						<sharedLibrary>
-							<groupId>org.mongodb</groupId>
-							<artifactId>mongodb-driver-legacy</artifactId>
-						</sharedLibrary>
-						 -->
-					</sharedLibraries>
+					<cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>${app.runtime}</muleVersion>
+						<applicationName>${cloudhub.applicationName}</applicationName>
+						<environment>${cloudhub.environment}</environment>
+						<workers>${cloudhub.workers}</workers>
+						<workerType>${cloudhub.workerType}</workerType>
+						<region>${cloudhub.region}</region>
+						<businessGroupId>${cloudhub.businessGroupId}</businessGroupId>
+						<connectedAppClientId>${cloudhub.environment.clientId}</connectedAppClientId>
+						<connectedAppClientSecret>${cloudhub.environment.clientSecret}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
+						<objectStoreV2>true</objectStoreV2>
+						<persistentQueues>true</persistentQueues>
+						<overrideProperties>false</overrideProperties>
+					</cloudHubDeployment>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.mulesoft.munit.tools</groupId>
 				<artifactId>munit-maven-plugin</artifactId>
-				<version>${munit.version}</version>
 				<executions>
 					<execution>
 						<id>test</id>
@@ -65,37 +73,29 @@
 					</execution>
 				</executions>
 				<configuration>
-					<runtimeVersion>${munit.runtime}</runtimeVersion>
 					<coverage>
 						<runCoverage>true</runCoverage>
 						<formats>
 							<format>html</format>
 						</formats>
-						<ignoreFlows>
-							<!-- Ignoring the entry points, main listener, console, 
-							embedded dashboard listener -->
-							<ignoreFlow>api-main</ignoreFlow>
-							<ignoreFlow>api-console</ignoreFlow>
-							<ignoreFlow>web-main</ignoreFlow>
-							<!-- Ignoring the following 2 flows since they were never implemented properly, 
-	  						they are not currently used but keeping them for future enhancements -->
-							<ignoreFlow>loader-sdlc-flow</ignoreFlow>
-							<ignoreFlow>loader-sdlc-splunk-hec-main-flow</ignoreFlow>
-
-							<!-- Ignoring the following 2 flows since they are not used by ARM aggregations (ARM v2 is used instead), 
-	  						keeping for reference but both will be removed in the future -->
-							<ignoreFlow>api-call-arm-apps-flow</ignoreFlow>
-							<ignoreFlow>collector-arm-apps-metrics-parallel-flow</ignoreFlow>
-							<!-- Ignoring roles groups since it is not used by default - keeping it for future improvements -->
-							<ignoreFlow>collector-rolegroups-metrics</ignoreFlow>
-							<ignoreFlow>api-call-coreservices-rolegroups</ignoreFlow>
-							<!-- Ignoring the following flows since they are not used - keeping them as references -->
-							<ignoreFlow>api-call-coreservices-login-cache-flow</ignoreFlow>
-							<ignoreFlow>api-call-analytics-events-flow</ignoreFlow>
-						</ignoreFlows>
+						<!-- requiredApplicationCoverage>0</requiredApplicationCoverage> <requiredResourceCoverage>0</requiredResourceCoverage> 
+							<requiredFlowCoverage>0</requiredFlowCoverage> <formats> <format>console</format> 
+							<format>html</format> </formats -->
 					</coverage>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<compilerArgs>
+						<args>-parameters</args>
+					</compilerArgs>
+					<target>1.8</target>
+				</configuration>
+			</plugin>		
+			
 		</plugins>
 	</build>
 
@@ -174,9 +174,9 @@
 
 	<repositories>
 		<repository>
-			<id>anypoint-exchange</id>
-			<name>Anypoint Exchange</name>
-			<url>https://maven.anypoint.mulesoft.com/api/v1/maven</url>
+			<id>anypoint-exchange-v2</id>
+			<name>Anypoint Exchange V2</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v2/maven</url>
 			<layout>default</layout>
 		</repository>
 		<repository>
@@ -185,11 +185,24 @@
 			<url>https://repository.mulesoft.org/releases/</url>
 			<layout>default</layout>
 		</repository>
+		<repository>
+			<id>exchange</id>
+			<name>Exchange Repository</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v2/organizations/${cloudhub.businessGroupId}/maven</url>
+			<layout>default</layout>
+		</repository>		
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Anypoint Exchange V3</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+			<layout>default</layout>
+		</repository>
 	</repositories>
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mulesoft-releases</id>
-			<name>mulesoft release repository</name>
+			<name>MuleSoft Releases Repository</name>
 			<layout>default</layout>
 			<url>https://repository.mulesoft.org/releases/</url>
 			<snapshots>
@@ -197,5 +210,6 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+
 
 </project>

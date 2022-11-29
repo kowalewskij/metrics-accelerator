@@ -5,7 +5,7 @@ name: Mule CI with Maven
 
 on:
   push:
-    branches: [ development ]
+    branches: [ master ]
 
 env:
   ## Cloudhub Properties -- Reference: https://docs.mulesoft.com/mule-runtime/4.3/deploy-to-cloudhub
@@ -21,11 +21,12 @@ env:
 
   # Environment Specific
   ## Dev
-  MULE_ENV_DEV: dev
-  CLOUDHUB_ENVIRONMENT_DEV: dev
-  CLOUDHUB_WORKERS_DEV: 1
-  CLOUDHUB_WORKER_TYPE_DEV: MICRO
-  CLOUDHUB_APPLICATION_NAME_DEV: metrics-accelerator-dev
+  MULE_ENV_DEV: prod
+  CLOUDHUB_ENVIRONMENT_PROD: prod
+  CLOUDHUB_WORKERS_PROD: 1
+  CLOUDHUB_WORKER_TYPE_PROD: MICRO
+  CLOUDHUB_APPLICATION_NAME_PROD: metrics-accelerator-test-dk-prod
+
 
 jobs:
   build-and-test:
@@ -57,7 +58,7 @@ jobs:
   deploy-dev:
     needs: build-and-test
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
     env:   
       ANYPOINT_PLATFORM_CLIENT_ID: ${{ secrets.ANYPOINT_APP_CLIENT_ID }}
       ANYPOINT_PLATFORM_CLIENT_SECRET: ${{ secrets.ANYPOINT_APP_CLIENT_SECRET }}
@@ -80,17 +81,17 @@ jobs:
       with:
         name: metrics-accelerator
     
-    - name: Deploy to Cloudhub Dev
+    - name: Deploy to Cloudhub Prod
       run: |
         artifactName=$(ls *.jar | head -1) 
         mvn mule:deploy \
           -s settings.xml \
           -Dmule.artifact=$artifactName \
-          -Dmule.env="$MULE_ENV_DEV" \
-          -Dcloudhub.applicationName="$CLOUDHUB_APPLICATION_NAME_DEV" \
-          -Dcloudhub.environment="$CLOUDHUB_ENVIRONMENT_DEV" \
-          -Dcloudhub.workers="$CLOUDHUB_WORKERS_DEV" \
-          -Dcloudhub.workerType="$CLOUDHUB_WORKER_TYPE_DEV" \
+          -Dmule.env="$MULE_ENV_PROD" \
+          -Dcloudhub.applicationName="$CLOUDHUB_APPLICATION_NAME_PROD" \
+          -Dcloudhub.environment="$CLOUDHUB_ENVIRONMENT_PROD" \
+          -Dcloudhub.workers="$CLOUDHUB_WORKERS_PROD" \
+          -Dcloudhub.workerType="$CLOUDHUB_WORKER_TYPE_PROD" \
           -Dcloudhub.region="$CLOUDHUB_REGION" \
           -Dcloudhub.businessGroupId="$CLOUDHUB_BUSINESS_GROUP_ID" \
           -Dcloudhub.environment.clientId="$ANYPOINT_PLATFORM_CLIENT_ID" \

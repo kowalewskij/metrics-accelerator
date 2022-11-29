@@ -1,0 +1,64 @@
+<settings>
+    <servers>
+        <server>
+            <id>mulesoft-ee</id>
+            <username>${MULE_NEXUS_USERNAME}</username>
+            <password>${MULE_NEXUS_PASSWORD}</password>
+        </server>
+        <server>
+            <id>exchange</id>
+            <username>${MULE_NEXUS_USERNAME}</username>
+            <password>${MULE_NEXUS_PASSWORD}</password>
+        </server>
+
+    </servers>
+    <pluginGroups> 
+        <pluginGroup>org.mule.tools</pluginGroup>
+    </pluginGroups>
+    <profiles>
+        <profile>
+            <id>mule-extra-repos</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>mule-public</id>
+                    <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+                </repository>
+                <repository>
+                    <id>exchange</id>
+                    <name>Exchange Repository</name>
+                    <url>https://maven.anypoint.mulesoft.com/api/v2/organizations/8ec380c0-efa1-4cb7-a91f-0889ceda6e9f/maven</url>
+                    <layout>default</layout>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>mule-public</id>
+                    <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+        <profile>
+            <id>Mule</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>mulesoft-ee</id>
+                    <name>Mulesoft Enterprise Repository</name>
+                    <url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
+                    <layout>default</layout>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+</settings>

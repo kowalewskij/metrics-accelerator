@@ -6,7 +6,7 @@
             <password>${MULE_NEXUS_PASSWORD}</password>
         </server>
         <server>
-            <id>exchange</id>
+            <id>anypoint-exchange</id>
             <username>${ANYPOINT_APP_CLIENT_ID}</username>
             <password>${ANYPOINT_APP_CLIENT_SECRET}</password>
         </server>

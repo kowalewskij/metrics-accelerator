@@ -52,6 +52,13 @@
 						<objectStoreV2>true</objectStoreV2>
 						<persistentQueues>true</persistentQueues>
 						<overrideProperties>false</overrideProperties>
+						<properties>
+							<mule.env>${mule.env}</mule.env>
+							<anypoint.platform.client_id>${cloudhub.environment.clientId}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${cloudhub.environment.clientSecret}</anypoint.platform.client_secret>
+							<anypoint.platform.config.analytics.agent.enabled>${cloudhub.environment.analyticsAgentEnabled}</anypoint.platform.config.analytics.agent.enabled>
+							<batch.persistent.queue.disable>true</batch.persistent.queue.disable>
+						</properties>
 					</cloudHubDeployment>
 				</configuration>
 			</plugin>

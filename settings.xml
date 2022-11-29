@@ -2,14 +2,15 @@
     <servers>
         <server>
             <id>mulesoft-ee</id>
-            <username>${MULE_NEXUS_USERNAME}</username>
-            <password>${MULE_NEXUS_PASSWORD}</password>
+            <username>jkowalewski</username>
+            <password>K4w1D1n23l2022+</password>
         </server>
         <server>
-            <id>anypoint-exchange</id>
-            <username>${ANYPOINT_APP_CLIENT_ID}</username>
-            <password>${ANYPOINT_APP_CLIENT_SECRET}</password>
+            <id>exchange</id>
+            <username>jkowalewski</username>
+            <password>K4w1D1n23l2022+</password>
         </server>
+
     </servers>
     <pluginGroups> 
         <pluginGroup>org.mule.tools</pluginGroup>
@@ -26,7 +27,7 @@
                     <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
                 </repository>
                 <repository>
-                    <id>anypoint-exchange</id>
+                    <id>exchange</id>
                     <name>Exchange Repository</name>
                     <url>https://maven.anypoint.mulesoft.com/api/v2/organizations/8ec380c0-efa1-4cb7-a91f-0889ceda6e9f/maven</url>
                     <layout>default</layout>
